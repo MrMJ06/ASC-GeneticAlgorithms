@@ -16,42 +16,46 @@ def main(N, T, P, G, F):
     neighbors_num = int(np.round(T*N))
     w_vectors = unitary_vectors(N)
     poblation = np.random.uniform(P[0], P[1], N)
-
+    fitness = evaluate(N, poblation)
     dist_matrix = calculate_distance_matrix(w_vectors, neighbors_num)
-
+    weight_population = map_weight_poblation(w_vectors, poblation)
     """Iteration"""
 
     for gen in range(G):
 
-        fitness = evaluate(N, poblation)
-        weight_population = map_weight_poblation(w_vectors, poblation)
         z = calculate_z(fitness)
         y = reproduction(dist_matrix, weight_population, F, P)
+
+        weight_children = map_weight_poblation(w_vectors, y)
 
         childen_fitness = evaluate(N, y)
         children_z = calculate_z(childen_fitness)
 
         z = update_z(z, children_z)
-        poblation = update_poblation(fitness, childen_fitness, dist_matrix, z, poblation, y)
+        poblation, fitness, weight_population = update_poblation(fitness, childen_fitness, dist_matrix, z, poblation, y, weight_population, weight_children)
 
+    return poblation
 
 """ Selection """
 
 
-def update_poblation(fitness, children_fitness, dist_matrix, z, poblation, y):
+def update_poblation(fitness, children_fitness, dist_matrix, z, poblation, y, weight_poblation, weight_children):
 
     for elem in dist_matrix:
-        for index, x_dist in enumerate(elem):
-            parent = poblation[index]
-            children = y[index]
+        for x_dist in elem:
+            parent = weight_poblation[x_dist[0]]
+            children = weight_children[x_dist[0]]
 
             agg_fit_children = agg_func(children_fitness[children], x_dist[0], z)
             agg_fit_parent = agg_func(fitness[parent], x_dist[0], z)
 
             if agg_fit_children <= agg_fit_parent:
-                poblation[index] = children
+                poblation = [p if p != parent else children for p in poblation]
+                weight_poblation[x_dist[0]] = children
+                #del fitness[parent]
+                fitness[children] = children_fitness[children]
 
-    return poblation
+    return [poblation, fitness, weight_poblation]
 
 
 def agg_func(fitness, weights, z):
@@ -92,7 +96,7 @@ def reproduction(dist_matrix, weight_poblation, F, P):
 
     for elem in dist_matrix:
         selected_elem = random.sample(elem, 3)
-        children = weight_poblation[selected_elem[0]]+F*(weight_poblation[selected_elem[1]]-weight_poblation[selected_elem[2]])
+        children = weight_poblation[selected_elem[0][0]]+F*(weight_poblation[selected_elem[1][0]]-weight_poblation[selected_elem[2][0]])
         children = check_space(children, P)
         childens.append(children)
 
@@ -135,7 +139,7 @@ def evaluate(N, poblation):
     for x in poblation:
         fitness[x] = zdt3_func(x, sum_x, N)
         f1.append(fitness[x][0])
-        f2.append(fitness[x][2])
+        f2.append(fitness[x][1])
 
     plt.scatter(f1, f2)
     plt.show()
@@ -212,4 +216,4 @@ def sum_poblation(poblation):
 
 
 if __name__=='__main__':
-    main(20, 0.2, (0, 1), 100, 0.5)
+    main(100, 0.2, (0, 1), 100, 0.5)
