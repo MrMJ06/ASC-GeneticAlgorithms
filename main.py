@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import os
 
 
-def main(N, T, P, G, F):
+def main(N, T, P, G, F, type):
 
     print("N : "+str(N))
     print("T : "+str(T))
@@ -16,27 +16,29 @@ def main(N, T, P, G, F):
     """Inialization"""
     neighbors_num = int(np.round(T*N))
     w_vectors = unitary_vectors(N)
-    poblation = np.random.uniform(P[0], P[1], N)
-    fitness = evaluate(N, poblation)
+    poblation = np.random.uniform(P[0], P[1], N-1)
+    poblation = np.insert(poblation, 0, np.random.random())
+
+    fitness = evaluate(N, poblation, type=type)
     dist_matrix = calculate_distance_matrix(w_vectors, neighbors_num)
     weight_population = map_weight_poblation(w_vectors, poblation)
-    front = [[],[]]
-    update_dominance(fitness, front)
+    # front = [[],[]]
+    front = update_dominance(fitness)
     """Iteration"""
 
     for gen in range(G):
         z = calculate_z(fitness)
-        print(z)
-        y = reproduction(dist_matrix, weight_population, F, P)
+        y = reproduction(dist_matrix, weight_population, F, P, type=type)
 
         weight_children = map_weight_poblation(w_vectors, y)
 
-        childen_fitness = evaluate(N, y)
+        childen_fitness = evaluate(N, y, type=type)
         children_z = calculate_z(childen_fitness)
 
         z = update_z(z, children_z)
         poblation, fitness, weight_population = update_poblation(fitness, childen_fitness, dist_matrix, z, poblation, y, weight_population, weight_children)
-        front = update_dominance(fitness, front)
+        front = update_dominance(fitness)
+        #print(front)
     print_front(front)
 
     return poblation
@@ -45,26 +47,29 @@ def main(N, T, P, G, F):
 """Dominance"""
 
 
-def update_dominance(fitness, front):
+def update_dominance(fitness):
 
-    if len(front[0]) == 0:
-        for x1, fitness1 in fitness.items():
-            x1_dominated = False
-            for x2, fitness2 in fitness.items():
-                if (float(fitness2[0]) < float(fitness1[0]) and float(fitness2[1])<=float(fitness1[1])) or \
-                        (float(fitness2[0])<=float(fitness1[0]) and float(fitness2[1])<float(fitness1[1])):
-                    x1_dominated = True
-                    break
-            if not x1_dominated:
-                front[0].append(fitness1[0])
-                front[1].append(fitness1[1])
-    else:
-        for x, fitness in fitness.items():
-            for i in range(len(front[0])):
-                if (float(fitness[0]) < float(front[0][i]) and float(fitness[1]) <= float(front[1][i])) or (
-                        float(fitness[0]) <= float(front[0][i]) and float(fitness[1]) < float(front[1][i])):
-                    front[0][i] = fitness[0]
-                    front[1][i] = fitness[1]
+    front = [[],[]]
+
+    # if len(front[0]) == 0:
+    for x1, fitness1 in fitness.items():
+        x1_dominated = False
+        for x2, fitness2 in fitness.items():
+            if (float(fitness2[0]) < float(fitness1[0]) and float(fitness2[1])<=float(fitness1[1])) or \
+                    (float(fitness2[0]) <= float(fitness1[0]) and float(fitness2[1])<float(fitness1[1])):
+                x1_dominated = True
+                break
+        if not x1_dominated:
+            front[0].append(fitness1[0])
+            front[1].append(fitness1[1])
+    # else:
+    #     for x, fitness_x in fitness.items():
+    #         x_dominated = False
+    #         for i in range(len(front[0])):
+    #             if (float(front[0][i]) > float(fitness_x[0]) and float(front[1][i]) >= float(fitness_x[1])) or (
+    #                      float(front[0][i]) >= float(fitness_x[0]) and float(front[1][i]) > float(fitness_x[1])):
+    #                 front[0][i]=fitness_x[0]
+    #                 front[1][i]=fitness_x[1]
 
     return front
 
@@ -124,13 +129,17 @@ def map_weight_poblation(w_vectors, poblation):
     return weight_population
 
 
-def reproduction(dist_matrix, weight_poblation, F, P):
+def reproduction(dist_matrix, weight_poblation, F, P, type=0):
     childens = []
 
-    for elem in dist_matrix:
+    for i, elem in enumerate(dist_matrix):
         selected_elem = [random.choice(elem) for i in elem]
         children = weight_poblation[selected_elem[0][0]]+F*(weight_poblation[selected_elem[1][0]]-weight_poblation[selected_elem[2][0]])
-        children = check_space(children, P)
+        if i == 0 and type != 0:
+            children = check_space(children, (0, 1))
+        else:
+            children = check_space(children, P)
+
         childens.append(children)
 
     return childens
@@ -279,14 +288,13 @@ def check_restrictions(poblation, N):
     x4 = poblation[3]
     penalization = 0
     r1 = x2-0.8*np.sin(6*np.pi*x1+2*np.pi/N)-np.sign(0.5*(1-x1)-(1-x1)**2)*np.sqrt(np.abs(0.5*(1-x1)-(1-x1)**2))
-    r2 = x4-0.8*np.sin(6*np.pi*x1+4*np.pi/N)-np.sign(0.25*np.sqrt((1-x1))-0.5*(1-x1))*np.sqrt(0.25*np.sqrt((1-x1))-0.5*(1-x1))
-
+    r2 = x4-0.8*np.sin(6*np.pi*x1+4*np.pi/N)-np.sign(0.25*np.sqrt(1-x1)-0.5*(1-x1))*np.sqrt(np.abs(0.25*np.sqrt(1-x1)-0.5*(1-x1)))
     if r1 >= 0:
         penalization += r1+1
     if r2 >= 0:
         penalization += r2+1
-
     return penalization
+
 
 def calculate_j(x1, poblation, N):
     y1 = []
@@ -305,5 +313,5 @@ def calculate_j(x1, poblation, N):
 
 
 if __name__=='__main__':
-    main(100, 0.3, (0, 1), 100, 0.5)
+    main(200, 0.3, (-2, 2), 50, 0.5, 1)
     #print(zdt3_func(0, 10, 100))
