@@ -2,14 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8e75038c-7814-4b93-9cd1-28b694b0f5d5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/PF_CF6_4.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/hv.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/pip-selfcheck.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pip-selfcheck.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/GA_ZDT3$main.coverage" NAME="main Coverage Results" MODIFIED="1547901741850" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-2113872505">
@@ -44,38 +50,51 @@
     <session id="-312753680">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="8" />
+          <entry key="project.closed" value="18" />
           <entry key="project.open.time.0" value="1" />
-          <entry key="project.open.time.2" value="2" />
+          <entry key="project.open.time.17" value="2" />
+          <entry key="project.open.time.2" value="3" />
+          <entry key="project.open.time.20" value="1" />
+          <entry key="project.open.time.21" value="1" />
+          <entry key="project.open.time.22" value="1" />
           <entry key="project.open.time.24" value="1" />
+          <entry key="project.open.time.27" value="1" />
           <entry key="project.open.time.29" value="1" />
           <entry key="project.open.time.3" value="1" />
-          <entry key="project.open.time.4" value="1" />
-          <entry key="project.open.time.6" value="1" />
+          <entry key="project.open.time.4" value="2" />
+          <entry key="project.open.time.5" value="3" />
+          <entry key="project.open.time.54" value="1" />
+          <entry key="project.open.time.6" value="2" />
           <entry key="project.open.time.66" value="1" />
-          <entry key="project.opened" value="9" />
+          <entry key="project.open.time.8" value="1" />
+          <entry key="project.open.time.82" value="1" />
+          <entry key="project.open.time.9" value="1" />
+          <entry key="project.opened" value="25" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="2852" />
+          <entry key="py" value="6446" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="2852" />
+          <entry key="Python" value="6446" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="4" />
+          <entry key="3_(0, 1)_10_10" value="2" />
+          <entry key="dat" value="1" />
+          <entry key="out" value="2" />
+          <entry key="py" value="13" />
           <entry key="txt" value="28" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PLAIN_TEXT" value="28" />
-          <entry key="Python" value="4" />
+          <entry key="PLAIN_TEXT" value="33" />
+          <entry key="Python" value="13" />
         </counts>
       </usages-collector>
     </session>
@@ -85,14 +104,16 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="83">
-              <caret line="294" column="28" selection-start-line="294" selection-start-column="28" selection-end-line="294" selection-end-column="28" />
+            <state relative-caret-position="30">
+              <caret line="2" column="26" lean-forward="true" selection-start-line="2" selection-start-column="26" selection-end-line="2" selection-end-column="26" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
-                <marker date="1546515592243" expanded="true" signature="1376:2406" ph="..." />
-                <marker date="1546515592243" expanded="true" signature="6169:7457" ph="..." />
-                <marker date="1546515592243" expanded="true" signature="6639:7087" ph="..." />
-                <marker date="1546515592243" expanded="true" signature="7121:7457" ph="..." />
+                <marker date="1547902693063" expanded="true" signature="2299:2866" ph="..." />
+                <marker date="1547902693063" expanded="true" signature="8372:11187" ph="..." />
+                <marker date="1547902693063" expanded="true" signature="9566:9942" ph="..." />
+                <marker date="1547902693063" expanded="true" signature="9970:10084" ph="..." />
+                <marker date="1547902693063" expanded="true" signature="10292:10743" ph="..." />
+                <marker date="1547902693063" expanded="true" signature="10765:11187" ph="..." />
               </folding>
             </state>
           </provider>
@@ -113,8 +134,19 @@
       <find>plt</find>
       <find>scat</find>
       <find>scatter</find>
+      <find>fitness</find>
+      <find>eval</find>
+      <find>range</find>
+      <find>print_fr</find>
+      <find>open</find>
+      <find>zdt3_func</find>
+      <find>agg</find>
+      <find>prin</find>
       <find>print</find>
     </findStrings>
+    <replaceStrings>
+      <replace>xrange</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -123,6 +155,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/EP.txt" />
+        <option value="$PROJECT_DIR$/hv.py" />
+        <option value="$PROJECT_DIR$/best_pop.out" />
+        <option value="$PROJECT_DIR$/best_pop_cf6_4.out" />
         <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
@@ -134,7 +169,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-10" />
+    <option name="x" value="1021" />
+    <option name="y" value="71" />
     <option name="width" value="875" />
     <option name="height" value="735" />
   </component>
@@ -143,7 +179,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -155,14 +190,20 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../TwitterAlfred" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/main.py" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Documentos\Uni\Repositorios\GA_ZDT3" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -203,9 +244,9 @@
       <module name="GA_ZDT3" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="C:\Users\manue\PycharmProjects\GA_ZDT3\venv\Scripts\python.exe" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
@@ -232,34 +273,44 @@
     </task>
     <servers />
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4913958" visible="true" weight="0.147651" />
-      <window_info id="Structure" order="1" sideWeight="0.5086042" side_tool="true" visible="true" weight="0.147651" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.45" visible="true" weight="0.24966443" />
+      <window_info id="Structure" order="1" sideWeight="0.55" side_tool="true" visible="true" weight="0.24966443" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32991204" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32991204" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.30498534" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32991204" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.43489933" side_tool="true" visible="true" weight="0.23313783" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32991204" />
-      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.56510067" visible="true" weight="0.23313783" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.44362417" side_tool="true" weight="0.34750733" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49798658" weight="0.32991204" />
+      <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.55637586" visible="true" weight="0.5014663" />
+      <window_info anchor="bottom" id="Concurrent Activities Diagram" order="13" weight="0.32991204" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" sideWeight="0.91395795" visible="true" weight="0.24563758" />
-      <window_info anchor="right" id="R Graphics" order="4" />
-      <window_info anchor="right" id="R Packages" order="5" />
+      <window_info anchor="right" x="429" y="118" width="678" height="588" id="SciView" order="3" sideWeight="0.9077307" visible="true" weight="0.2033557" />
+      <window_info anchor="right" id="R Graphics" order="4" weight="0.3295302" />
+      <window_info anchor="right" id="R Packages" order="5" weight="0.3295302" />
       <window_info anchor="right" id="Database" order="6" weight="0.3295302" />
-      <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="7" sideWeight="0.08604206" side_tool="true" visible="true" weight="0.24563758" />
+      <window_info anchor="right" x="0" y="0" width="337" height="638" id="Documentation" order="7" sideWeight="0.092269324" side_tool="true" visible="true" weight="0.34496644" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -287,31 +338,17 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/newEP.txt">
-      <provider editor-type-id="text-editor" />
       <provider selected="true" editor-type-id="LargeFileEditor">
         <state relative-caret-position="90">
           <caret column="967" selection-end-column="1280000" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2018.2/system/python_stubs/-1367609533/builtins.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="466" column="4" selection-start-line="466" selection-start-column="4" selection-end-line="466" selection-end-column="4" />
-        </state>
-      </provider>
+      <provider editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/numpy/random/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="234">
           <caret line="101" column="29" lean-forward="true" selection-start-line="101" selection-start-column="29" selection-end-line="101" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2018.2/system/python_stubs/-1367609533/numpy/random/mtrand.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13">
-          <caret line="2211" column="4" selection-start-line="2211" selection-start-column="4" selection-end-line="2211" selection-end-column="4" />
         </state>
       </provider>
     </entry>
@@ -322,16 +359,95 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/numpy/core/fromnumeric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="1820" column="4" selection-start-line="1820" selection-start-column="4" selection-end-line="1820" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hv3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1080" />
+      </provider>
+    </entry>
+    <entry file="file://D:/AppData/Local/Continuum/anaconda3/Lib/random.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="748" selection-start-line="748" selection-end-line="748" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2018.2/system/python_stubs/-1367609533/numpy/random/mtrand.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="29610">
+          <caret line="1978" column="4" selection-start-line="1978" selection-start-column="4" selection-end-line="1978" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/results_100_0.3_(0, 1)_10_10" />
+    <entry file="file://$PROJECT_DIR$/results_50_0.3_(0, 1)_10_10" />
+    <entry file="file://$PROJECT_DIR$/hv.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2445">
+          <caret line="163" column="61" selection-start-line="163" selection-start-column="61" selection-end-line="163" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/pyplot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42090">
+          <caret line="2855" column="4" selection-start-line="2855" selection-start-column="4" selection-end-line="2855" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PF.dat">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/results_500_0.3_(0, 1)_20_20" />
+    <entry file="file://D:/AppData/Local/Continuum/anaconda3/Lib/sre_parse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="169" column="21" selection-start-line="169" selection-start-column="21" selection-end-line="169" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2018.2/system/python_stubs/-1367609533/builtins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="3628" column="8" selection-start-line="3628" selection-start-column="8" selection-end-line="3628" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/best_pop_cf6_4.out">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1104" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/PF_CF6_4.dat">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3015" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/best_pop.out">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="392" selection-start-column="392" selection-end-column="392" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="83">
-          <caret line="294" column="28" selection-start-line="294" selection-start-column="28" selection-end-line="294" selection-end-column="28" />
+        <state relative-caret-position="30">
+          <caret line="2" column="26" lean-forward="true" selection-start-line="2" selection-start-column="26" selection-end-line="2" selection-end-column="26" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
-            <marker date="1546515592243" expanded="true" signature="1376:2406" ph="..." />
-            <marker date="1546515592243" expanded="true" signature="6169:7457" ph="..." />
-            <marker date="1546515592243" expanded="true" signature="6639:7087" ph="..." />
-            <marker date="1546515592243" expanded="true" signature="7121:7457" ph="..." />
+            <marker date="1547902693063" expanded="true" signature="2299:2866" ph="..." />
+            <marker date="1547902693063" expanded="true" signature="8372:11187" ph="..." />
+            <marker date="1547902693063" expanded="true" signature="9566:9942" ph="..." />
+            <marker date="1547902693063" expanded="true" signature="9970:10084" ph="..." />
+            <marker date="1547902693063" expanded="true" signature="10292:10743" ph="..." />
+            <marker date="1547902693063" expanded="true" signature="10765:11187" ph="..." />
           </folding>
         </state>
       </provider>

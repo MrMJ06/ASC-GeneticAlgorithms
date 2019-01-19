@@ -1,10 +1,9 @@
 import numpy as np
-import random
 import matplotlib.pyplot as plt
-import os
+from hv import HyperVolume
 
 
-def main(N, T, P, G, F, type):
+def main(N, T, P, G, F, type, dim):
 
     print("N : "+str(N))
     print("T : "+str(T))
@@ -16,32 +15,61 @@ def main(N, T, P, G, F, type):
     """Inialization"""
     neighbors_num = int(np.round(T*N))
     w_vectors = unitary_vectors(N)
-    poblation = np.random.uniform(P[0], P[1], N-1)
-    poblation = np.insert(poblation, 0, np.random.random())
-
-    fitness = evaluate(N, poblation, type=type)
+    poblation = np.random.uniform(P[0], P[1], (N, dim-1))
+    if type !=0:
+        new_poblation = []
+        for i, pob in enumerate(poblation):
+            new_poblation.append(np.insert(pob, 0, np.random.uniform(0, 1, 1)))
+        poblation = new_poblation
+    if type == 0:
+        ideal = get_points()
+    else:
+        ideal = get_points(path_f="PF_CF6_4.dat")
+    print(poblation)
+    fitness = evaluate(N, poblation, ideal, type=type)
     dist_matrix = calculate_distance_matrix(w_vectors, neighbors_num)
     weight_population = map_weight_poblation(w_vectors, poblation)
-    # front = [[],[]]
+    front = [[],[]]
     front = update_dominance(fitness)
     """Iteration"""
-
+    z = calculate_z(fitness)
     for gen in range(G):
-        z = calculate_z(fitness)
-        y = reproduction(dist_matrix, weight_population, F, P, type=type)
 
+        y = reproduction(dist_matrix, weight_population, F, P, type=type)
         weight_children = map_weight_poblation(w_vectors, y)
 
-        childen_fitness = evaluate(N, y, type=type)
+        childen_fitness = evaluate(N, y, ideal, type=type)
         children_z = calculate_z(childen_fitness)
 
         z = update_z(z, children_z)
-        poblation, fitness, weight_population = update_poblation(fitness, childen_fitness, dist_matrix, z, poblation, y, weight_population, weight_children)
+        poblation, fitness, weight_population = update_poblation(fitness, childen_fitness, dist_matrix, z, poblation, y, weight_population, weight_children, type=type)
         front = update_dominance(fitness)
-        #print(front)
-    print_front(front)
+    print_front(front, ideal, True, type=type)
+
+    if type == 0:
+        folder = "ZDT3"
+    else:
+        folder = "CF6_"+str(dim)
+
+    with open(folder+"/results_"+str(N)+"_"+str(T)+"_"+str(P)+"_"+str(G)+"_"+str(G), "w+") as r:
+        for i in range(len(front[0])):
+            r.write(str(front[0][i])+" "+str(front[1][i])+" 0"+"\n")
+
+    r.close()
 
     return poblation
+
+
+def get_points(path_f="PF.dat"):
+    points = [[],[]]
+    with open(path_f,"r") as pf:
+        while True:
+            x = pf.readline()
+            x = x.rstrip()
+            if not x: break
+            points[0].append(float(x.split()[0]))
+            points[1].append(float(x.split()[1]))
+    return points
 
 
 """Dominance"""
@@ -62,14 +90,6 @@ def update_dominance(fitness):
         if not x1_dominated:
             front[0].append(fitness1[0])
             front[1].append(fitness1[1])
-    # else:
-    #     for x, fitness_x in fitness.items():
-    #         x_dominated = False
-    #         for i in range(len(front[0])):
-    #             if (float(front[0][i]) > float(fitness_x[0]) and float(front[1][i]) >= float(fitness_x[1])) or (
-    #                      float(front[0][i]) >= float(fitness_x[0]) and float(front[1][i]) > float(fitness_x[1])):
-    #                 front[0][i]=fitness_x[0]
-    #                 front[1][i]=fitness_x[1]
 
     return front
 
@@ -77,29 +97,54 @@ def update_dominance(fitness):
 """ Selection """
 
 
-def update_poblation(fitness, children_fitness, dist_matrix, z, poblation, y, weight_poblation, weight_children):
+def update_poblation(fitness, children_fitness, dist_matrix, z, poblation, y, weight_poblation, weight_children, type=0):
 
-    for elem in dist_matrix:
+    for i, elem in enumerate(dist_matrix):
+        # for index, y_dist in enumerate(elem):
+        children = y[i]
+        if type != 0:
+            children_restrictions = check_restrictions(children)
+
         for x_dist in elem:
-            parent = weight_poblation[x_dist[0]]
-            children = weight_children[x_dist[0]]
+            agg_fit_children = agg_func(children_fitness[i], x_dist[0], z)
+            parent_pos = list(weight_poblation.keys()).index(x_dist[0])
+            # print(str(parent_pos))
+            agg_fit_parent = agg_func(fitness[parent_pos], x_dist[0], z)
 
-            agg_fit_children = agg_func(children_fitness[children], x_dist[0], z)
-            agg_fit_parent = agg_func(fitness[parent], x_dist[0], z)
+            if type != 0:
+                parent_restrictions = check_restrictions(poblation[parent_pos])
 
-            if agg_fit_children <= agg_fit_parent:
-                poblation = [p if p != parent else children for p in poblation]
+            if agg_fit_children <= agg_fit_parent and type == 0:
+
+                poblation[parent_pos] = children
                 weight_poblation[x_dist[0]] = children
-                #del fitness[parent]
-                fitness[children] = children_fitness[children]
+                fitness[parent_pos] = children_fitness[i]
+
+            elif type!= 0 and children_restrictions != 0 and parent_restrictions!= 0 and children_restrictions<=parent_restrictions :
+
+                poblation[parent_pos] = children
+                weight_poblation[x_dist[0]] = children
+                fitness[parent_pos] = children_fitness[i]
+
+            elif type != 0 and children_restrictions == 0 and parent_restrictions != 0 :
+
+                poblation[parent_pos] = children
+                weight_poblation[x_dist[0]] = children
+                fitness[parent_pos] = children_fitness[i]
+
+            elif type != 0 and children_restrictions == 0 and parent_restrictions == 0 and agg_fit_children <= agg_fit_parent:
+
+                poblation[parent_pos] = children
+                weight_poblation[x_dist[0]] = children
+                fitness[parent_pos] = children_fitness[i]
 
     return [poblation, fitness, weight_poblation]
 
 
 def agg_func(fitness, weights, z):
 
-    ge1 = weights[0]*(fitness[0]-z[0])
-    ge2 = weights[1]*(fitness[1]-z[1])
+    ge1 = weights[0]*(np.abs(fitness[0]-z[0]))
+    ge2 = weights[1]*(np.abs(fitness[1]-z[1]))
 
     agg_fitness = np.maximum(ge1, ge2)
 
@@ -133,12 +178,20 @@ def reproduction(dist_matrix, weight_poblation, F, P, type=0):
     childens = []
 
     for i, elem in enumerate(dist_matrix):
-        selected_elem = [random.choice(elem) for i in elem]
+        original = weight_poblation[elem[0][0]]
+        np.random.shuffle(elem)
+        selected_elem = elem[0:3]
+
         children = weight_poblation[selected_elem[0][0]]+F*(weight_poblation[selected_elem[1][0]]-weight_poblation[selected_elem[2][0]])
-        if i == 0 and type != 0:
-            children = check_space(children, (0, 1))
-        else:
-            children = check_space(children, P)
+        for j, e in enumerate(original):
+            ran = np.random.randint(0, 2)
+            # print(ran)
+            if ran >= 1:
+                # print("changed")
+                children[j] = original[j]
+        # sigma = (np.max(weight_poblation[elem[0][0]])-np.min(weight_poblation[elem[0][0]]))/20
+        # children = weight_poblation[elem[0][0]]+np.random.normal(0, sigma, 30)
+        children = check_space(children, P)
 
         childens.append(children)
 
@@ -147,12 +200,20 @@ def reproduction(dist_matrix, weight_poblation, F, P, type=0):
 
 def check_space(children, P):
 
-    if children < P[0]:
-        children = P[0]
+    fixed_children = children
+    for i, x in enumerate(children):
+        if i == 0:
+            if children[0] < 0:
+                fixed_children[0] = 0
+            elif children[0] > 1:
+                fixed_children[0] = 1
+        else:
+            if x < P[0]:
+                fixed_children[i] = P[0]
 
-    elif children > P[1]:
-        children = P[1]
-    return children
+            elif x > P[1]:
+                fixed_children[i] = P[1]
+    return fixed_children
 
 
 """Evaluation"""
@@ -171,22 +232,22 @@ def calculate_z(fitness):
     return [min_f1, min_f2]
 
 
-def evaluate(N, poblation, type=0):
+def evaluate(N, poblation, ideal, type=0):
 
     f1 = []
     f2 = []
     fitness = {}
-    sum_x = sum_poblation(poblation)
     for index, x in enumerate(poblation):
         if type == 0:
-            fitness[x] = zdt3_func(x, sum_x, N)
+            fitness[index] = zdt3_func(x)
         else:
-            fitness[x] = cf6_func(index, poblation, N)
+            fitness[index] = cf6_func(x)
 
-        f1.append(fitness[x][0])
-        f2.append(fitness[x][1])
+        f1.append(fitness[index][0])
+        f2.append(fitness[index][1])
 
     plt.scatter(f1, f2)
+    plt.scatter(ideal[0], ideal[1], c="r")
     plt.show()
 
     return fitness
@@ -231,19 +292,19 @@ def euclidean_distance(p1, p2):
 """ZDT3 Function"""
 
 
-def zdt3_func(x, sum_x, n):
+def zdt3_func(x):
 
-    f1 = x
-    g = g_func(sum_x, n)
+    f1 = x[0]
+    g = g_func(np.sum(x)-x[0])
 
     f2 = g*h(f1, g)
 
     return [f1, f2]
 
 
-def g_func(sum_x, n):
+def g_func(sum_x):
 
-    return 1+(9/(n-1))*sum_x
+    return 1+((9/29)*sum_x)
 
 
 def h(f1, g):
@@ -259,59 +320,98 @@ def sum_poblation(poblation):
     return sum_x
 
 
-def print_front(front):
+def print_front(front, ideal, final=False, type=0):
 
-    plt.scatter(front[0], front[1], c='r')
+    plt.scatter(ideal[0], ideal[1], c='r', alpha=0.1, linewidths=0.01)
+    plt.scatter(front[0], front[1], c='b', linewidths=0.01)
+    front = transform_points(front)
+    if final:
+        if type != 0:
+            nsga_points = get_points("best_pop_cf6_4.out")
+        else:
+            nsga_points = get_points("best_pop.out")
+
+        plt.scatter(nsga_points[0], nsga_points[1], c="y", alpha=0.8, linewidth=0.01)
+        referencePoint = [1, 1]
+        hyperVolume = HyperVolume(referencePoint)
+        nsga_points = transform_points(nsga_points)
+        result = hyperVolume.compute(front)
+        result_nsga = hyperVolume.compute(nsga_points)
+        coverage_f2_f1 = calculate_coverage(front, nsga_points)
+        coverage_f1_f2 = calculate_coverage(nsga_points, front)
+        print("Coverage my front over other front = "+str(coverage_f2_f1))
+        print("Coverage other front over my front = "+str(coverage_f1_f2))
+        print("Hypervolume my solution = "+str(result))
+        print("Hypervolume other solution = "+str(result_nsga))
     plt.show()
+
+
+def calculate_coverage(front1, front2):
+
+    points_front_2_dominated = 0
+    for point2 in front2:
+        for point1 in front1:
+            if (-float(point1[0]) < -float(point2[0]) and -float(point1[1]) <= -float(point2[1])) or \
+                    (-float(point1[0]) <= -float(point2[0]) and -float(point1[1]) < -float(point2[1])):
+                points_front_2_dominated += 1
+                break
+        else:
+            continue
+        break
+
+    return points_front_2_dominated/len(front2)
+
+
+def transform_points(front):
+    points = []
+    for i, x in enumerate(front[0]):
+     points.append([-x, -front[1][i]])
+
+    return points
 
 
 """CF6 Function"""
 
 
-def cf6_func(index, poblation, N):
-    x = poblation[index]
-    y1, y2 = calculate_j(x, poblation, N)
+def cf6_func(indv):
+    y1, y2 = calculate_j(indv)
 
-    f1 = x+sum(np.power(y1, 2))
-    f2 = ((1-x)**2)+sum(np.power(y2, 2))
-    penalization = check_restrictions(poblation, N)
-    if index == 0 or index == 1 or index == 3:
-        f1 += penalization
-        f2 += penalization
+    f1 = indv[0]+sum(np.power(y1, 2))
+    f2 = ((1-indv[0])**2)+sum(np.power(y2, 2))
 
     return f1, f2
 
 
-def check_restrictions(poblation, N):
-    x1 = poblation[0]
-    x2 = poblation[1]
-    x4 = poblation[3]
+def check_restrictions(indv):
+    x1 = indv[0]
+    x2 = indv[1]
+    x4 = indv[3]
     penalization = 0
-    r1 = x2-0.8*np.sin(6*np.pi*x1+2*np.pi/N)-np.sign(0.5*(1-x1)-(1-x1)**2)*np.sqrt(np.abs(0.5*(1-x1)-(1-x1)**2))
-    r2 = x4-0.8*np.sin(6*np.pi*x1+4*np.pi/N)-np.sign(0.25*np.sqrt(1-x1)-0.5*(1-x1))*np.sqrt(np.abs(0.25*np.sqrt(1-x1)-0.5*(1-x1)))
-    if r1 >= 0:
-        penalization += r1+1
-    if r2 >= 0:
-        penalization += r2+1
+    r1 = x2-0.8*x1*np.sin(6*np.pi*x1+2*np.pi/len(indv))-np.sign(0.5*(1-x1)-(1-x1)**2)*np.sqrt(np.abs(0.5*(1-x1)-(1-x1)**2))
+    r2 = x4-0.8*x1*np.sin(6*np.pi*x1+4*np.pi/len(indv))-np.sign(0.25*np.sqrt(1-x1)-0.5*(1-x1))*np.sqrt(np.abs(0.25*np.sqrt(1-x1)-0.5*(1-x1)))
+    if r1 < 0:
+        penalization += -r1
+    if r2 < 0:
+        penalization += -r2
     return penalization
 
 
-def calculate_j(x1, poblation, N):
+def calculate_j(indv):
     y1 = []
     y2 = []
 
-    for j, x in enumerate(poblation):
+    for j, x in enumerate(indv):
 
-        if j % 2 != 0 and 2 <= j <= N:
-            y = x-0.8*x1*np.cos(6*np.pi+(j*np.pi/N))
+        if (j+1) % 2 != 0 and 2 <= (j+1) <= len(indv):
+            y = x-0.8*indv[0]*np.cos(6 * np.pi * indv[0]+((j+1) * np.pi /len(indv)))
             y1.append(y)
-        elif j % 2 == 0 and 2 <= j <= N:
-            y = x - 0.8 * x1 * np.cos(6 * np.pi + (j * np.pi / N))
+        elif (j+1) % 2 == 0 and 1 <= (j+1) <= len(indv):
+            y = x - 0.8 * indv[0] * np.cos(6 * np.pi * indv[0] + ((j+1) * np.pi / len(indv)))
             y2.append(y)
 
     return y1, y2
 
 
-if __name__=='__main__':
-    main(200, 0.3, (-2, 2), 50, 0.5, 1)
-    #print(zdt3_func(0, 10, 100))
+if __name__ == '__main__':
+    main(100, 0.15, (0, 1), 100, 0.5, 0, 4)
+
